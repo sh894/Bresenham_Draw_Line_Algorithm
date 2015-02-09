@@ -1,8 +1,8 @@
 /*
-	LineDialog.h - LineDialog class declaration. 
-	Dialog for line endpoint input and management.
-	Written by:
-	Anoop Haridas
+    LineDialog.h - LineDialog class declaration.
+    Dialog for line endpoint input and management.
+    Written by:
+    Anoop Haridas
 */
 
 #ifndef LINEDIALOG_H
@@ -14,22 +14,22 @@
 /************************LineDialog***************************
 // A dialog box that for entering pairs of points to draw the beginning and ending of the line
 */
-class LineDialog : public QDialog 
+class LineDialog : public QDialog
 {
   Q_OBJECT
 
 public:
-  
-  LineDialog(QWidget *parent = 0); 
-  
-  ~LineDialog(); 
+
+  LineDialog(QWidget *parent = 0);
+
+  ~LineDialog();
 
 signals:
   /*
   A signal to indicate when the values are updated
   */
   void valuesUpdated(int x1, int y1, int x2, int y2);
-  
+
 private:
   QLineEdit *editX1, *editX2, *editY1, *editY2;
 

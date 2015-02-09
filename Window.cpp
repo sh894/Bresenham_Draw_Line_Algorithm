@@ -13,15 +13,20 @@ Window::Window(MainWindow *mw) : mainWindow(mw)
 	connect(glWindow, SIGNAL(mouseMoved(int, int)), this->mainWindow, SLOT(updateStatusLabel(int, int)));
 
 	connect(this, SIGNAL(printCallFromMW()), glWindow, SLOT(togglePrintDialog()));
-	connect(this, SIGNAL(chooseColorFromMW()), glWindow, SLOT(chooseColor()));
+
 	connect(this, SIGNAL(drawDialogLineFromMW()), glWindow, SLOT(drawDialogLine()));
 	connect(this, SIGNAL(drawMouseLineFromMW()), glWindow, SLOT(drawMouseLine()));
 	connect(this, SIGNAL(drawMousePolyLineFromMW()), glWindow, SLOT(drawMousePolyline()));
 	connect(this, SIGNAL(drawMousePolygonFromMW()), glWindow, SLOT(drawMousePolygon()));
+
     connect(this, SIGNAL(drawBowtieFromMW()), glWindow, SLOT(drawBowtie()));
     connect(this, SIGNAL(drawHouseFromMW()), glWindow, SLOT(drawHouse()));
 
+    connect(this, SIGNAL(chooseColorFromMW()), glWindow, SLOT(chooseColor()));
+
+    connect(this,SIGNAL(drawLineStyleFromMW()),glWindow,SLOT(styleDialog()));
 	
+
 	QVBoxLayout* mainLayout = new QVBoxLayout;
 	QHBoxLayout* container = new QHBoxLayout;
 	

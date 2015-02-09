@@ -83,10 +83,7 @@ MainWindow::MainWindow()
     exitAct->setStatusTip(tr("Exit the application"));
     connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
 
-	colorAct = new QAction(tr("Set Color"), this);
-    colorAct->setStatusTip(tr("Set the current drawing color"));
-    connect(colorAct, SIGNAL(triggered()), childWindow, SIGNAL(chooseColorFromMW()));
-	//connect(colorAct, SIGNAL(triggered()), glWindow, SLOT(chooseColor()));
+
 
     diagLineAct = new QAction(tr("Line"), this);
     diagLineAct->setStatusTip(tr("Open dialog for line drawing"));
@@ -108,6 +105,8 @@ MainWindow::MainWindow()
     connect(mousePolygonAct, SIGNAL(triggered()), childWindow, SIGNAL(drawMousePolygonFromMW()));
 	//connect(mousePolygonAct, SIGNAL(triggered()), glWindow, SLOT(drawMousePolygon()));
 
+
+    //Creat actions drawing bowtie and house by MainWindow widget
     drawBowtieAct = new QAction(tr("Bowtie"),this);
     drawBowtieAct->setStatusTip(tr("Draw a Bowtie"));
     connect(drawBowtieAct,SIGNAL(triggered()), childWindow, SIGNAL(drawBowtieFromMW()));
@@ -116,8 +115,17 @@ MainWindow::MainWindow()
     drawHouseAct->setStatusTip(tr("Draw a House"));
     connect(drawHouseAct,SIGNAL(triggered()),childWindow,SIGNAL(drawHouseFromMW()));
 
+    //Creat actions setting line color, line pattern, line thickness by MainWindow widget
+    colorAct = new QAction(tr("Set Color"), this);
+    colorAct->setStatusTip(tr("Set the current drawing color"));
+    connect(colorAct, SIGNAL(triggered()), childWindow, SIGNAL(chooseColorFromMW()));
+    //connect(colorAct, SIGNAL(triggered()), glWindow, SLOT(chooseColor()));
 
-  }
+    //Create actions to set the line style
+    lineStyleAct = new QAction(tr("Set Line Thickness"),this);
+    lineStyleAct->setStatusTip(tr("Open dialog for line style"));
+    connect(lineStyleAct,SIGNAL(triggered()),childWindow,SIGNAL(drawLineStyleFromMW()));
+}
 
   /*<<<<<<<<<<<<<<<<<<<<<<createMenus>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
   void MainWindow::createMenus()
@@ -131,7 +139,11 @@ MainWindow::MainWindow()
 	
 	//The options menu
     optionsMenu = menuBar()->addMenu(tr("&Options"));
+    //Add options to choose line color, line pattern, line thickness
 	optionsMenu->addAction(colorAct);
+    optionsMenu->addSeparator();
+    optionsMenu->addAction(lineStyleAct);
+
 
 	//The graphics menu
 	graphicsMenu = menuBar()->addMenu(tr("&Graphics"));
@@ -155,6 +167,7 @@ MainWindow::MainWindow()
 	interactToolBar->addAction(mouseLineAct);
 	interactToolBar->addAction(mousePolylineAct);
 	interactToolBar->addAction(mousePolygonAct);
+
     interactToolBar->addAction(drawBowtieAct);
     interactToolBar->addAction(drawHouseAct);
   }

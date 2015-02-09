@@ -2,6 +2,8 @@
 	DrawingAlgorithms.h - DrawingAlgorithms class declaration. 
 	Written by:
 	Anoop Haridas
+    Added by:
+    Siman Huang
 */
 
 #ifndef DRAWINGALGORITHMS_H

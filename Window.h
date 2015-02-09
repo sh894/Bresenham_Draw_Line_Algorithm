@@ -22,9 +22,11 @@ signals:
 	void drawMouseLineFromMW();
 	void drawMousePolyLineFromMW();
 	void drawMousePolygonFromMW();
+
     void drawBowtieFromMW();
     void drawHouseFromMW();
-	
+
+    void drawLineStyleFromMW();
 private:
 	
 	GLWidget* glWindow;

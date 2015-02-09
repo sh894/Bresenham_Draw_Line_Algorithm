@@ -75,6 +75,10 @@ private:
   QAction* mousePolylineAct;
   QAction* mousePolygonAct;
 
+  QAction* lineStyleAct;
+
+  //Add draw bowtie action to menue
+  //Add draw house action to meune
   QAction* drawBowtieAct;
   QAction* drawHouseAct;
 

@@ -14,6 +14,7 @@
 
 class PrintDialog;
 class LineDialog;
+class LineStyle;
 
 /*
 Note:  When an QGLWidget type is created the following happens immediately in this order:\
@@ -109,11 +110,19 @@ public slots:
   */
   void drawDialogLine();
 
+
   /*---------------------updateDialogLine-------------------
   Updates the line variables from dialog
   Input: int x1, y1, x2, y2: the line endpoints
   */
   void updateDialogLine(int x1, int y1, int x2, int y2);
+
+  void styleDialog();
+
+  void updatestyleDialog(int x);
+
+
+
 
   /*---------------------drawMouseLine----------------------
   Enables interactive line drawing
@@ -185,6 +194,11 @@ protected:
   */
   virtual void mousePressEvent(QMouseEvent* e);
 
+  /*--------------------MouseReleaseEvent--------------------
+  Captures mouse release events
+  */
+  virtual void mouseReleaseEvent(QMouseEvent* e);
+
 
 private:
   /*-------------------ClearShapeVariables-----------------
@@ -194,6 +208,8 @@ private:
 
   //The end point coordinates for the DDA line
   int startX, startY, finishX, finishY;
+
+  int styleX;
 
   //The current line color
   GLubyte lineColor[3];
@@ -215,6 +231,7 @@ private:
 
   PrintDialog* printDiag;
   LineDialog* lineDiag;
+  LineStyle* lineStyle;
 };
 
 #endif

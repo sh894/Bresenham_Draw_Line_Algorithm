@@ -11,6 +11,8 @@
 #include "GLWidget.h"
 #include "LineDialog.h"
 
+#include "linestyle.h"
+
 #include "PrintDialog.h"
 #include "DrawingAlgorithms.h"
 
@@ -21,6 +23,7 @@
 #include <QMouseEvent>
 #include <QVector>
 #include <QString>
+#include <QMessageBox>
 
 const int GLWidget::NONE = 0;
 const int GLWidget::MOUSE = 1;
@@ -47,6 +50,8 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
 
   clickCounter = 0;
   drawMode = shapeMode = 0;
+  styleX = 1;
+
 
   clearShapeVariables();
 
@@ -61,7 +66,12 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
   lineDiag->setModal(false);
   lineDiag->setVisible(false);
   connect(lineDiag, SIGNAL(valuesUpdated(int, int, int, int)), this, SLOT(updateDialogLine(int, int, int, int)));
-  
+
+  lineStyle = new LineStyle(this);
+  lineStyle->setModal(false);
+  lineStyle->setVisible(false);
+  connect(lineStyle,SIGNAL(stylevaluesUpdated(int)),this,SLOT(updatestyleDialog(int)));
+
   // The following code allows for animated graphics by attempting to refresh the screen at 50fps.
   //	STEP 1: Create a timer
   QTimer *timer = new QTimer(this);
@@ -147,6 +157,17 @@ void GLWidget::updateDialogLine(int x1, int y1, int x2, int y2)
   areShapesClear = false;       //Indicate a shape is ready to draw
   printOnce = false;            //Clear to allow the results to print once
 }
+//------------------------GLWidget::styleDialog--------------------------
+void GLWidget::styleDialog()
+{
+    lineStyle->show();
+}
+/*-----------------------GLWidget::updatestyleDialog-------------------------*/
+void GLWidget::updatestyleDialog(int x)
+{
+    styleX = x;
+
+}
 
 /*----------------------------GLWidget::drawMouseLine-----------------------*/
 void GLWidget::drawMouseLine()
@@ -222,6 +243,7 @@ void GLWidget::chooseColor()
   glColor3ubv(lineColor);
 }
 
+
 //-------------------------GLWidget::initializeGL-----------------------------
 void GLWidget::initializeGL()
 {
@@ -271,6 +293,7 @@ void GLWidget::paintGL()
     {
      case GLWidget::HOUSE:
         //draw the house
+        glPointSize(styleX);
         output = DrawingAlgorithms::drawLineDouble(40,40,40,90);
         output = DrawingAlgorithms::drawLineDouble(40,90,70,120);
         output = DrawingAlgorithms::drawLineDouble(70,120,100,90);
@@ -288,6 +311,7 @@ void GLWidget::paintGL()
 
      case GLWidget::BOWTIE:
             //Draw the bowtie
+        glPointSize(styleX);
            output = DrawingAlgorithms::drawLineDouble(100,100,100,60);
            output = DrawingAlgorithms::drawLineDouble(100,60,120,76);
            output = DrawingAlgorithms::drawLineDouble(120,76,140,60);
@@ -301,6 +325,7 @@ void GLWidget::paintGL()
 	      {
 	         //Replace this with your own line algorithm
               //output = DrawingAlgorithms::drawLine(startX, startY, finishX, finishY);
+              glPointSize(styleX);
               output = DrawingAlgorithms::drawLineDouble(startX, startY, finishX, finishY);
 
 
@@ -333,8 +358,23 @@ void GLWidget::mouseMoveEvent(QMouseEvent* e)
   //Everytime the mouse moves inside the OpenGL widget, it
   //sends out the new mouse position (centered at the middle)
   //to the MainWindow
+    if((e->buttons()&Qt::LeftButton) && (drawMode==GLWidget::MOUSE))
+    {
+        //status = 1;
+        finishX = e->x() - width()/2;
+        finishY = height()/2 -e->y();
+        clickCounter=0;
+
+    }
   emit mouseMoved(e->x() - width()/2 , height()/2 - e->y());
 }
+
+//---------------------GLWidget::MouseReaseEvent----------------------------
+void GLWidget::mouseReleaseEvent(QMouseEvent *e)
+{
+    printOnce = false;
+}
+
  
 //---------------------GLWidget::MousePressEvent----------------------------
 void GLWidget::mousePressEvent(QMouseEvent* e)
